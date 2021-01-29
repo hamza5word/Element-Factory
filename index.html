@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Element Factory Converter</title>
+    <script src="js/ElementFactory.js" ></script>
+</head>
+<body onload="loadUsingElementFactory()">
+    <div id="content">
+        <h1>This is a content</h1>
+        <hr>
+        <ul class="content-list center">
+            <li>1</li>
+            <li>2</li>
+        </ul>
+    </div>
+</body>
+<script>
+    function loadUsingInnerHTML() {
+        document.body.innerHTML = '<div id="content">\n' +
+            '        <h1>This is a content</h1>\n' +
+            '        <hr>\n' +
+            '        <ul class="content-list center">\n' +
+            '            <li>1</li>\n' +
+            '            <li>2</li>\n' +
+            '        </ul>\n' +
+            '    </div>';
+    }
+
+    function loadUsingDOMParser() {
+        // Building Stage
+        let divContainer = document.createElement('div');
+        divContainer.id = 'content';
+        let title = document.createElement('h1');
+        title.innerText = 'This is a content';
+        let listContainer = document.createElement('ul');
+        listContainer.classList.add('content-list', 'center');
+        let listItem1 = document.createElement('li');
+        listItem1.innerText = '1';
+        let listItem2 = document.createElement('li');
+        listItem2.innerText = '2';
+        // Collect Stage
+        listContainer.appendChild(listItem1);
+        listContainer.appendChild(listItem2);
+        divContainer.appendChild(title);
+        divContainer.appendChild(document.createElement('hr'));
+        divContainer.appendChild(listContainer);
+        document.body.appendChild(divContainer);
+    }
+
+    function loadUsingElementFactory() {
+        document.body.appendChild(buildDIV(
+            [
+                buildElement('h1', 'This is a content'),
+                buildHR(),
+                buildElement('ul', [
+                    buildElement('li', '1'),
+                    buildElement('li', '2')
+                ], cls(['content-list', 'center']))
+            ],
+            id('content')
+        ));
+    }
+</script>
+</html>
